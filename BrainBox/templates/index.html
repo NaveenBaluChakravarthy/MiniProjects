@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<style>
+		#textInput {border: none; border-bottom: 3px solid brown;}
+		.userText {color: white; font-family: monospace; font-size: 17px; text-align: right; line-height: 30px;}
+		.userText span {background-color: #2F4F4F; padding: 10px; border-radius: 5px;}
+		.botText {color: black;	font-family: monospace;	font-size: 17px; text-align: left; line-height: 20px;}
+	</style>
+</head>
+<body>
+    <h1 class="jumbotron text-center">BrainBox<br><span style='font-size: 20pt;'>Who wants to be a Millionaire?</span></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <div id="chatbox" class="border border-success">
+                <br>
+                <p class="botText">&nbsp;&nbsp;Welcome to BrainBox! There will be 15 questions. You <br>
+                                   &nbsp;&nbsp;can win 1 ETH for each correct answer. Acceptable <br>
+                                   &nbsp;&nbsp;inputs : A, B, C, D, N, X, Y, Z. Game quits when <br>
+                                   &nbsp;&nbsp;you give a wrong answer. <br><br><br>
+                                   &emsp;&emsp;A, B, C, D - Options <br>
+                                   &emsp;&emsp;N - Proceed to next question <br>
+                                   &emsp;&emsp;X - Phone a friend <br>
+                                   &emsp;&emsp;Y - Audience Poll <br>
+                                   &emsp;&emsp;Z - 50/50 <br><br>
+                                   &nbsp;&nbsp;Shall we begin? Hit N for your question!</p>
+            </div>
+            <br>
+            <br>
+            <div id="userInput">
+                <input id="textInput" class="form-control" type="text" name="msg" placeholder="Type Your Message Here">
+                <br>
+                <br>
+                <input id="buttonInput" class="btn btn-success form-control" type="submit" value="Send">
+            </div>
+        </div>
+    </div>
+<script>
+    function getResponse() {
+        let userText = $("#textInput").val();
+        let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+        $.get("/get", { msg: userText }).done(function(data) {
+        var botHtml = '<p class="botText">&nbsp;&nbsp;' + data + '</p>';
+        $("#chatbox").append(botHtml);
+        document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+});
+}
+    $("#textInput").keypress(function(e) {
+    //if enter key is pressed
+        if(e.which == 13) {
+            getResponse();
+        }
+    });
+    $("#buttonInput").click(function() {
+        getResponse();
+    });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
